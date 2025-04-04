@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.finalcalcultor.utils.MD5Utils;
 
-public class SecondActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     private Button btn_register;//注册按钮
     //用户名，密码，再次输入的密码的控件
     private EditText user,password,password1;
@@ -22,9 +22,9 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_register);
         //设置页面布局 ,注册界面
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_register);
         //设置此界面为竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         init();
@@ -44,25 +44,25 @@ public class SecondActivity extends AppCompatActivity {
                 getEditString();
                 //判断输入框内容
                 if(TextUtils.isEmpty(userName)){
-                    Toast.makeText(SecondActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(TextUtils.isEmpty(psw)){
-                    Toast.makeText(SecondActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(TextUtils.isEmpty(pswAgain)){
-                    Toast.makeText(SecondActivity.this, "请再次输入密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请再次输入密码", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(!psw.equals(pswAgain)){
-                    Toast.makeText(SecondActivity.this, "输入两次的密码不一样", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "输入两次的密码不一样", Toast.LENGTH_SHORT).show();
                     return;
                     /**
                      *从SharedPreferences中读取输入的用户名，判断SharedPreferences中是否有此用户名
                      */
                 }else if(isExistUserName(userName)){
-                    Toast.makeText(SecondActivity.this, "此账户名已经存在", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "此账户名已经存在", Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    Toast.makeText(SecondActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                     //把账号、密码和账号标识保存到sp里面
                     /**
                      * 保存账号和密码到SharedPreferences中
@@ -75,7 +75,7 @@ public class SecondActivity extends AppCompatActivity {
                     setResult(RESULT_OK, data);
                     //RESULT_OK为Activity系统常量，状态码为-1，
                     // 表示此页面下的内容操作成功将data返回到上一页面，如果是用back返回过去的则不存在用setResult传递data值
-                    SecondActivity.this.finish();
+                    RegisterActivity.this.finish();
                 }
             }
         });

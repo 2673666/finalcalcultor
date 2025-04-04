@@ -19,7 +19,7 @@ public class RecordActivity extends AppCompatActivity {
         mFirstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RecordActivity.this, FirstActivity.class);
+                Intent intent = new Intent(RecordActivity.this, LoginActivity.class);
                 startActivity(intent);
                 // Start CheatActivity
             }
@@ -28,7 +28,7 @@ public class RecordActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RecordActivity.this, SecondActivity.class);
+                Intent intent = new Intent(RecordActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });

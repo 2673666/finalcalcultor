@@ -13,14 +13,14 @@ import android.widget.Toast;
 
 import com.example.finalcalcultor.utils.MD5Utils;
 
-public class FirstActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private Button btn_login;//登录按钮
     private String uerName,password,spPsw;//获取的用户名，密码，加密密码
     private EditText user_input,password_input;//编辑框
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first);
+        setContentView(R.layout.activity_login);
 //设置此界面为竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         init();
@@ -49,15 +49,15 @@ public class FirstActivity extends AppCompatActivity {
                 spPsw=readPsw(uerName);
                 // TextUtils.isEmpty
                 if(TextUtils.isEmpty(uerName)){
-                    Toast.makeText(FirstActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(TextUtils.isEmpty(password)){
-                    Toast.makeText(FirstActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
                     // md5Psw.equals(); 判断，输的密码加密后，是否入与保存在SharedPreferences中一致
                 }else if(md5Psw.equals(spPsw)){
                     //一致登录成功
-                    Toast.makeText(FirstActivity.this,msg+"，登录成功！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,msg+"，登录成功！", Toast.LENGTH_SHORT).show();
                     //保存登录状态，在界面保存登录的用户名 定义个方法 saveLoginStatus boolean 状态 , userName 用户名;
                     saveLoginStatus(true, uerName);
                     //登录成功后关闭此页面进入主页
@@ -68,15 +68,15 @@ public class FirstActivity extends AppCompatActivity {
                     // 表示此页面下的内容操作成功将data返回到上一页面，如果是用back返回过去的则不存在用setResult传递data值
                     setResult(RESULT_OK,data);*/
                     //销毁登录界面
-                    FirstActivity.this.finish();
+                    LoginActivity.this.finish();
                     //跳转到主界面，登录成功的状态传递到 MainActivity 中
-                    startActivity(new Intent(FirstActivity.this, GradeCalcultorActivity.class));
+                    startActivity(new Intent(LoginActivity.this, GradeCalcultorActivity.class));
                     return;
                 }else if((spPsw!=null&&!TextUtils.isEmpty(spPsw)&&!md5Psw.equals(spPsw))){
-                    Toast.makeText(FirstActivity.this, "输入的用户名和密码不一致", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "输入的用户名和密码不一致", Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    Toast.makeText(FirstActivity.this, "此用户名不存在", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "此用户名不存在", Toast.LENGTH_SHORT).show();
                 }
             }
         });
