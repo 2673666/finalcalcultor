@@ -15,7 +15,7 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-        mFirstButton = (Button) findViewById(R.id.first);
+        mFirstButton = (Button) findViewById(R.id.login);
         mFirstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

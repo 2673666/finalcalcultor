@@ -31,10 +31,10 @@
         android:id="@+id/btnAddCourse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/sharp"
         android:text="添加课程"
-        android:textSize="18sp"
         android:textColor="@color/white"
-        android:background="@drawable/sharp" />
+        android:textSize="18sp" />
 
     <ListView
         android:id="@+id/listViewCourses"
@@ -46,34 +46,34 @@
         android:id="@+id/textViewAverageScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="平均分: 0.0"
-        android:textSize="18sp"
-        android:gravity="center" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textViewGPA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="GPA: 0.0"
-        android:textSize="18sp"
-        android:gravity="center" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnCalculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/sharp"
         android:text="计算"
-        android:textSize="18sp"
         android:textColor="@color/white"
-        android:background="@drawable/sharp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/sharp"
         android:text="清除"
-        android:textSize="18sp"
         android:textColor="@color/white"
-        android:background="@drawable/sharp" />
+        android:textSize="18sp" />
 
 </LinearLayout>
