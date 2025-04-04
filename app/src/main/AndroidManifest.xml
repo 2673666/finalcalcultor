@@ -27,9 +27,9 @@
         </activity>
         <activity android:name="com.example.finalcalcultor.WelcomeActivity" />
         <activity android:name="com.example.finalcalcultor.GradeCalcultorActivity" />
-        <activity android:name="com.example.finalcalcultor.FirstActivity" />
+        <activity android:name="com.example.finalcalcultor.LoginActivity" />
         <activity android:name="com.example.finalcalcultor.RecordActivity" />
-        <activity android:name="com.example.finalcalcultor.SecondActivity" />
+        <activity android:name="com.example.finalcalcultor.RegisterActivity" />
 
     </application>
 
