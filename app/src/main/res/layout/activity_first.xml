@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstActivity"
+    android:background="@drawable/mtl">
+    <TextView
+        android:text="登录页面"
+        android:layout_width="500dp"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:layout_marginTop="150dp"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/user_input"
+        android:gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sharp"
+        android:hint="请输入用户名"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:inputType="textPassword"
+        />
+    <EditText
+        android:layout_marginTop="20dp"
+        android:id="@+id/password_input"
+        android:gravity="center"
+        android:background="@drawable/sharp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
+        android:layout_below="@id/user_input"
+        android:textSize="20sp"
+        android:password="true"/>
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:layout_below="@id/password_input"
+        android:layout_centerHorizontal="true"
+        android:background="@color/purple_200"/>
+
+</RelativeLayout>

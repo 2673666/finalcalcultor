@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextCourseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="课程名称"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="成绩"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/editTextCredit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="学分"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btnAddCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加课程"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/sharp" />
+
+    <ListView
+        android:id="@+id/listViewCourses"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/textViewAverageScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="平均分: 0.0"
+        android:textSize="18sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/textViewGPA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GPA: 0.0"
+        android:textSize="18sp"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/btnCalculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="计算"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/sharp" />
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="清除"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/sharp" />
+
+</LinearLayout>
