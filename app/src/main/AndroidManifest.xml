@@ -30,6 +30,7 @@
         <activity android:name="com.example.finalcalcultor.LoginActivity" />
         <activity android:name="com.example.finalcalcultor.RecordActivity" />
         <activity android:name="com.example.finalcalcultor.RegisterActivity" />
+        <service android:name=".AudioPlayService"/>
 
     </application>
 
