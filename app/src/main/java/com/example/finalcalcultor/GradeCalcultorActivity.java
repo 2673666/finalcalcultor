@@ -210,23 +210,17 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
         double totalGradePoints = 0; // 总绩点
         double totalCredit = 0; // 总学分
 
-        // 遍历课程列表计算总绩点和总学分
-        for (Course course : courses) {
-            double gradePoint = 0; // 单个课程的绩点
-            if (course.getScore() >= 100) {
-                gradePoint = 5.0; // 成绩 100 分及以上，绩点为 5.0
-            } else if (course.getScore() >= 87) {
-                gradePoint = 3.7; // 成绩 87-99 分，绩点为 3.7
-            } else if (course.getScore() >= 70) {
-                gradePoint = 2.0; // 成绩 70-86 分，绩点为 2.0
-            } else if (course.getScore() >= 60) {
-                gradePoint = 0; // 成绩 60-69 分，绩点为 0
+        for(Course course: courses){
+            if(course.getCredit() > 0) {
+                totalGradePoints += (course.getScore() - 50) * course.getCredit() /10;
+                totalCredit += course.getCredit();
             }
-            totalGradePoints += gradePoint * course.getCredit(); // 累加加权绩点
-            totalCredit += course.getCredit(); // 累加学分
         }
-
-        return totalCredit != 0 ? totalGradePoints / totalCredit : 0; // 计算 GPA
+        if(totalGradePoints < 0)
+        {
+            return 0;
+        }
+        return totalCredit != 0 ? totalGradePoints / totalCredit : 0;
     }
 
     /**
