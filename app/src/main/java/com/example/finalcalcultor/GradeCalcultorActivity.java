@@ -1,6 +1,15 @@
 package com.example.finalcalcultor;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +39,10 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
     private ListView listViewCourses; // 显示课程列表的 ListView
     private TextView textViewAverageScore; // 显示平均分的 TextView
     private TextView textViewGPA; // 显示 GPA 的 TextView
+    private AudioPlayService audioService;
+    private boolean isBound = false;
+
+    private static final String ACTION_GPA_CALCULATED = "com.example.finalcalcultor.GPA_CALCULATED";
 
     // 数据模型和适配器
     private List<Course> courses = new ArrayList<>(); // 保存所有课程信息的列表
@@ -39,6 +53,18 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
      *
      * @param savedInstanceState 保存的实例状态
      */
+
+    private BroadcastReceiver gpaReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ACTION_GPA_CALCULATED)) {
+                double gpa = intent.getDoubleExtra("gpa", 0.0);
+                Toast.makeText(GradeCalcultorActivity.this, "接收到 GPA: " + gpa, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +89,26 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
         btnAddCourse.setOnClickListener(this);
         btnCalculate.setOnClickListener(this);
         btnClear.setOnClickListener(this);
-    }
 
+        Intent intent = new Intent(this, AudioPlayService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(gpaReceiver, new IntentFilter(ACTION_GPA_CALCULATED));
+    }
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AudioPlayService.LocalBinder binder = (AudioPlayService.LocalBinder) service;
+            audioService = binder.getService();
+            isBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+        }
+    };
     /**
      * 处理按钮点击事件。
      *
@@ -110,24 +154,50 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
      * 计算平均分和 GPA。
      */
     private void calculateAverageScoreAndGPA() {
-        double totalScore = 0; // 总加权成绩
-        double totalCredit = 0; // 总学分
+        double totalScore = 0;
+        double totalCredit = 0;
 
-        // 遍历课程列表计算总加权成绩和总学分
         for (Course course : courses) {
             totalScore += course.getScore() * course.getCredit();
             totalCredit += course.getCredit();
         }
 
-        // 计算平均分
         double averageScore = totalCredit != 0 ? totalScore / totalCredit : 0;
-
-        // 计算 GPA
         double gpa = calculateGPA(courses);
 
-        // 更新 TextView 显示结果
         textViewAverageScore.setText(String.format("平均分: %.2f", averageScore));
         textViewGPA.setText(String.format("GPA: %.2f", gpa));
+
+        Intent intent = new Intent(ACTION_GPA_CALCULATED);
+        intent.putExtra("gpa", gpa);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
+        // 调用 Service 播放音效
+        if (isBound) {
+            if (gpa > 3.0) {
+                audioService.playHighSound();
+            } else if (gpa < 3.0) {
+                audioService.playLowSound();
+            }
+        }
+        else {
+            Log.e("AudioService", "Service 未绑定！");
+        }
+
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isBound) {
+            audioService.stopAllSounds(); // 或者自定义一个 releaseResources()
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(gpaReceiver);
     }
 
     /**
@@ -140,45 +210,43 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
         double totalGradePoints = 0; // 总绩点
         double totalCredit = 0; // 总学分
 
-        for(Course course: courses){
-            if(course.getCredit() > 0) {
-                totalGradePoints += (course.getScore() - 50) * course.getCredit() /10;
-                totalCredit += course.getCredit();
+        // 遍历课程列表计算总绩点和总学分
+        for (Course course : courses) {
+            double gradePoint = 0; // 单个课程的绩点
+            if (course.getScore() >= 100) {
+                gradePoint = 5.0; // 成绩 100 分及以上，绩点为 5.0
+            } else if (course.getScore() >= 87) {
+                gradePoint = 3.7; // 成绩 87-99 分，绩点为 3.7
+            } else if (course.getScore() >= 70) {
+                gradePoint = 2.0; // 成绩 70-86 分，绩点为 2.0
+            } else if (course.getScore() >= 60) {
+                gradePoint = 0; // 成绩 60-69 分，绩点为 0
             }
+            totalGradePoints += gradePoint * course.getCredit(); // 累加加权绩点
+            totalCredit += course.getCredit(); // 累加学分
         }
-        if(totalGradePoints < 0)
-        {
-            return 0;
-        }
-        return totalCredit != 0 ? totalGradePoints / totalCredit : 0;
 
-//        // 遍历课程列表计算总绩点和总学分
-//        for (Course course : courses) {
-//            double gradePoint = 0; // 单个课程的绩点
-//            if (course.getScore() >= 100) {
-//                gradePoint = 5.0; // 成绩 100 分及以上，绩点为 5.0
-//            } else if (course.getScore() >= 87) {
-//                gradePoint = 3.7; // 成绩 87-99 分，绩点为 3.7
-//            } else if (course.getScore() >= 70) {
-//                gradePoint = 2.0; // 成绩 70-86 分，绩点为 2.0
-//            } else if (course.getScore() >= 60) {
-//                gradePoint = 0; // 成绩 60-69 分，绩点为 0
-//            }
-//            totalGradePoints += gradePoint * course.getCredit(); // 累加加权绩点
-//            totalCredit += course.getCredit(); // 累加学分
-//        }
-//        return totalCredit != 0 ? totalGradePoints / totalCredit : 0; // 计算 GPA
+        return totalCredit != 0 ? totalGradePoints / totalCredit : 0; // 计算 GPA
     }
 
     /**
      * 清空课程数据。
      */
     private void clearCourses() {
-        courses.clear(); // 清空课程列表
-        courseAdapter.notifyDataSetChanged(); // 通知适配器数据已更改
-        textViewAverageScore.setText("平均分: 0.0"); // 重置平均分显示
-        textViewGPA.setText("GPA: 0.0"); // 重置 GPA 显示
+        courses.clear();
+        courseAdapter.notifyDataSetChanged();
+        textViewAverageScore.setText("平均分: 0.0");
+        textViewGPA.setText("GPA: 0.0");
+
+        // 清空输入框
+        clearInputFields();
+
+        // 停止播放
+        if (isBound) {
+            audioService.stopAllSounds();
+        }
     }
+
 
     /**
      * 清空输入框内容。
@@ -188,4 +256,5 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
         editTextScore.setText(""); // 清空课程成绩输入框
         editTextCredit.setText(""); // 清空课程学分输入框
     }
+
 }
