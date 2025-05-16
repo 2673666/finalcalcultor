@@ -175,9 +175,9 @@ public class GradeCalcultorActivity extends AppCompatActivity implements View.On
 
         // 调用 Service 播放音效
         if (isBound) {
-            if (gpa > 3.0) {
+            if (gpa >= 1.8) {
                 audioService.playHighSound();
-            } else if (gpa < 3.0) {
+            } else {
                 audioService.playLowSound();
             }
         }
